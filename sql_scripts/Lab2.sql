@@ -12,63 +12,6 @@ CREATE TABLE diagnosis(
     title NVARCHAR(255)
 );
 
--- Врач
-CREATE TABLE doctor(
-    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
-    full_name NVARCHAR(255) NOT NULL,
-    specialization NVARCHAR(255) NOT NULL
-);
-
--- Отделение стационара
-CREATE TABLE hospital_department(
-    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
-    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
-    name NVARCHAR(255),
-    number_of_beds SMALLINT,
-    number_of_cameras SMALLINT
-);
-
--- Палата
-CREATE TABLE ward(
-    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
-    id_hospital_department SMALLINT FOREIGN KEY REFERENCES hospital_department(id),
-    number SMALLINT,
-    number_of_beds SMALLINT,
-    m_or_w CHAR(1) CHECK (m_or_w IN ('M', 'W')),
-    key_diagnosis VARCHAR(6) NOT NULL FOREIGN KEY REFERENCES diagnosis([code-mkb10])
-);
-
--- Пациент
-CREATE TABLE patient(
-    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    id_ward SMALLINT FOREIGN KEY REFERENCES ward(id),
-    full_name VARCHAR(255),
-    passport VARCHAR(255) UNIQUE,
-    medical_policy VARCHAR(255) UNIQUE,
-    number_phone VARCHAR(255) UNIQUE,
-    address NVARCHAR(255),
-    date_of_birth DATE,
-    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id)
-);
-
--- Поступление
-CREATE TABLE patient_admission(
-    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    id_patient INT FOREIGN KEY REFERENCES patient(id),
-    key_diagnosis VARCHAR(6) NOT NULL FOREIGN KEY REFERENCES diagnosis([code-mkb10]),
-    date_of_receipt DATE
-);
-
--- Карта пациента
-CREATE TABLE patient_card(
-    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    id_patient INT FOREIGN KEY REFERENCES patient(id),
-    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
-    date_of_receipt DATE,
-    date_of_discharge DATE,
-    recommendations NVARCHAR(255)
-);
-
 INSERT INTO diagnosis ([code-mkb10], title) VALUES
 ('I10', 'Эссенциальная (первичная) гипертензия'),
 ('E11', 'Сахарный диабет 2 типа'),
@@ -80,6 +23,14 @@ INSERT INTO diagnosis ([code-mkb10], title) VALUES
 ('I48', 'Фибрилляция и трепетание предсердий'),
 ('N39', 'Инфекция мочевыводящих путей'),
 ('G43', 'Мигрень');
+
+
+-- Врач
+CREATE TABLE doctor(
+    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
+    full_name NVARCHAR(255) NOT NULL,
+    specialization NVARCHAR(255) NOT NULL
+);
 
 INSERT INTO doctor (full_name, specialization) VALUES
 ('Иванов Александр Сергеевич', 'Кардиолог'),
@@ -93,6 +44,15 @@ INSERT INTO doctor (full_name, specialization) VALUES
 ('Павлов Алексей Викторович', 'Офтальмолог'),
 ('Соколова Татьяна Михайловна', 'Отоларинголог');
 
+-- Отделение стационара
+CREATE TABLE hospital_department(
+    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
+    name NVARCHAR(255),
+    number_of_beds SMALLINT,
+    number_of_cameras SMALLINT
+);
+
 INSERT INTO hospital_department (doctor_id, name, number_of_beds, number_of_cameras) VALUES
 (1, 'Кардиологическое отделение', 30, 15),
 (2, 'Эндокринологическое отделение', 25, 12),
@@ -105,6 +65,16 @@ INSERT INTO hospital_department (doctor_id, name, number_of_beds, number_of_came
 (9, 'Офтальмологическое отделение', 15, 8),
 (10, 'ЛОР-отделение', 16, 8);
 
+-- Палата
+CREATE TABLE ward(
+    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
+    id_hospital_department SMALLINT FOREIGN KEY REFERENCES hospital_department(id),
+    number SMALLINT,
+    number_of_beds SMALLINT,
+    m_or_w CHAR(1) CHECK (m_or_w IN ('M', 'W')),
+    key_diagnosis VARCHAR(6) NOT NULL FOREIGN KEY REFERENCES diagnosis([code-mkb10])
+);
+
 INSERT INTO ward (id_hospital_department, number, number_of_beds, m_or_w, key_diagnosis) VALUES
 (1, 101, 2, 'M', 'I10'), (1, 102, 2, 'W', 'I10'), (1, 103, 3, 'M', 'I25'),
 (2, 201, 2, 'W', 'E11'), (2, 202, 2, 'M', 'E11'), (2, 203, 3, 'W', 'E11'),
@@ -116,6 +86,19 @@ INSERT INTO ward (id_hospital_department, number, number_of_beds, m_or_w, key_di
 (8, 801, 2, 'W', 'N39'), (8, 802, 2, 'M', 'N39'), (8, 803, 3, 'W', 'N39'),
 (9, 901, 2, 'M', 'G43'), (9, 902, 2, 'W', 'G43'), (9, 903, 3, 'M', 'G43'),
 (10, 1001, 2, 'W', 'J06'), (10, 1002, 2, 'M', 'J06'), (10, 1003, 3, 'W', 'J06');
+
+-- Пациент
+CREATE TABLE patient(
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    id_ward SMALLINT FOREIGN KEY REFERENCES ward(id),
+    full_name VARCHAR(255),
+    passport VARCHAR(255) UNIQUE,
+    medical_policy VARCHAR(255) UNIQUE,
+    number_phone VARCHAR(255) UNIQUE,
+    address NVARCHAR(255),
+    date_of_birth DATE,
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id)
+);
 
 INSERT INTO patient (id_ward, full_name, passport, medical_policy, number_phone, address, date_of_birth, doctor_id) VALUES
 (1, 'Смирнов Алексей Викторович', '4510123456', '1234567890', '+79161234567', 'ул. Ленина, 15, кв. 23', '1978-03-15', 1),
@@ -131,12 +114,30 @@ INSERT INTO patient (id_ward, full_name, passport, medical_policy, number_phone,
 (11, 'Козлов Александр Дмитриевич', '4510444444', '4444444444', '+79164444444', 'пр. Космонавтов, 3, кв. 15', '1970-06-12', 1),
 (12, 'Лебедева Наталья Викторовна', '4510123457', '1234567891', '+79161234568', 'ул. Школьная, 19, кв. 4', '1992-10-28', 2);
 
+-- Поступление
+CREATE TABLE patient_admission(
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    id_patient INT FOREIGN KEY REFERENCES patient(id),
+    key_diagnosis VARCHAR(6) NOT NULL FOREIGN KEY REFERENCES diagnosis([code-mkb10]),
+    date_of_receipt DATE
+);
+
 INSERT INTO patient_admission (id_patient, key_diagnosis, date_of_receipt) VALUES
 (1, 'I10', '2024-01-15'), (2, 'E11', '2024-01-16'), (3, 'J45', '2024-01-17'),
 (4, 'I25', '2024-01-18'), (5, 'K21', '2024-01-19'), (6, 'M54', '2024-01-20'),
 (7, 'J06', '2024-01-21'), (8, 'I48', '2024-01-22'), (9, 'N39', '2024-01-23'),
 (10, 'G43', '2024-01-24'), (11, 'I10', '2024-01-25'), (12, 'E11', '2024-01-26'),
 (1, 'I25', '2024-02-01'), (3, 'J06', '2024-02-02'), (5, 'M54', '2024-02-03');
+
+-- Карта пациента
+CREATE TABLE patient_card(
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    id_patient INT FOREIGN KEY REFERENCES patient(id),
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
+    date_of_receipt DATE,
+    date_of_discharge DATE,
+    recommendations NVARCHAR(255)
+);
 
 INSERT INTO patient_card (id_patient, doctor_id, date_of_receipt, date_of_discharge, recommendations) VALUES
 (1, 1, '2024-01-15', '2024-01-25', 'Контроль АД ежедневно, диета с ограничением соли'),
