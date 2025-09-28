@@ -22,7 +22,7 @@ CREATE TABLE doctor(
 -- Отделение стационара
 CREATE TABLE hospital_department(
     id SMALLINT IDENTITY(1,1) PRIMARY KEY,
-    id_doctor SMALLINT FOREIGN KEY REFERENCES doctor(id),
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
     name NVARCHAR(255),
     number_of_beds SMALLINT,
     number_of_cameras SMALLINT
@@ -48,7 +48,7 @@ CREATE TABLE patient(
     number_phone VARCHAR(255),
     adress NVARCHAR(255),
     date_of_birth DATE,
-    id_doctor SMALLINT FOREIGN KEY REFERENCES doctor(id)
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id)
 );
 
 -- Поступление
@@ -63,7 +63,7 @@ CREATE TABLE patient_admission(
 CREATE TABLE patient_card(
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     id_patient INT FOREIGN KEY REFERENCES patient(id),
-    id_doctor SMALLINT FOREIGN KEY REFERENCES doctor(id),
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
     date_of_receipt DATE,
     date_of_discharge DATE,
     recommendations NVARCHAR(255)
@@ -93,7 +93,7 @@ INSERT INTO doctor (full_name, specialization) VALUES
 ('Павлов Алексей Викторович', 'Офтальмолог'),
 ('Соколова Татьяна Михайловна', 'Отоларинголог');
 
-INSERT INTO hospital_department (id_doctor, name, number_of_beds, number_of_cameras) VALUES
+INSERT INTO hospital_department (doctor_id, name, number_of_beds, number_of_cameras) VALUES
 (1, 'Кардиологическое отделение', 30, 15),
 (2, 'Эндокринологическое отделение', 25, 12),
 (3, 'Пульмонологическое отделение', 20, 10),
@@ -117,7 +117,7 @@ INSERT INTO ward (id_hospital_department, number, number_of_beds, m_or_w, key_di
 (9, 901, 2, 'M', 'G43'), (9, 902, 2, 'W', 'G43'), (9, 903, 3, 'M', 'G43'),
 (10, 1001, 2, 'W', 'J06'), (10, 1002, 2, 'M', 'J06'), (10, 1003, 3, 'W', 'J06');
 
-INSERT INTO patient (id_ward, full_name, passport, medical_policy, number_phone, adress, date_of_birth, id_doctor) VALUES
+INSERT INTO patient (id_ward, full_name, passport, medical_policy, number_phone, adress, date_of_birth, doctor_id) VALUES
 (1, 'Смирнов Алексей Викторович', '4510123456', '1234567890', '+79161234567', 'ул. Ленина, 15, кв. 23', '1978-03-15', 1),
 (2, 'Ковалева Ирина Петровна', '4510987654', '9876543210', '+79167654321', 'пр. Мира, 42, кв. 7', '1985-07-22', 2),
 (3, 'Попов Дмитрий Николаевич', '4510555555', '5555555555', '+79165555555', 'ул. Гагарина, 8, кв. 12', '1960-12-03', 3),
@@ -138,7 +138,7 @@ INSERT INTO patient_admission (id_patient, key_diagnosis, date_of_receipt) VALUE
 (10, 'G43', '2024-01-24'), (11, 'I10', '2024-01-25'), (12, 'E11', '2024-01-26'),
 (1, 'I25', '2024-02-01'), (3, 'J06', '2024-02-02'), (5, 'M54', '2024-02-03');
 
-INSERT INTO patient_card (id_patient, id_doctor, date_of_receipt, date_of_discharge, recommendations) VALUES
+INSERT INTO patient_card (id_patient, doctor_id, date_of_receipt, date_of_discharge, recommendations) VALUES
 (1, 1, '2024-01-15', '2024-01-25', 'Контроль АД ежедневно, диета с ограничением соли'),
 (2, 2, '2024-01-16', '2024-01-26', 'Контроль уровня сахара, низкоуглеводная диета'),
 (3, 3, '2024-01-17', '2024-01-27', 'Ингаляции с беродуалом, избегать переохлаждения'),
