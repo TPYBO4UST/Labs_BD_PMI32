@@ -23,4 +23,37 @@ P.S. Решили что лечащего врача лучше прикрепл
 
 ![Relational Model](Images/реляционная.jpg)
 
-### Лабораторная работа №2 (Лежит в папке sql\_scripts)
+### Лабораторная работа №2
+Реализация физической модели в СУБД Microsoft SQL Server на основе реляционной модели(посроенной в 1-ой лаборатоной работе)
+#### Диаграмма построенная на основе кода mssql(в СУБД dbeaver)
+
+![Relational Model](Images/2lab_dg.jpg)
+
+#### Пример создания таблицы
+```sql
+CREATE TABLE ward(
+    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
+    id_hospital_department SMALLINT FOREIGN KEY REFERENCES hospital_department(id),
+    number SMALLINT,
+    number_of_beds SMALLINT,
+    m_or_w CHAR(1) CHECK (m_or_w IN ('M', 'W')),
+    key_diagnosis VARCHAR(6) NOT NULL FOREIGN KEY REFERENCES diagnosis([code-mkb10])
+);
+```
+#### Пример заполнения таблицы
+
+```sql
+INSERT INTO doctor (full_name, specialization) VALUES
+('Иванов Александр Сергеевич', 'Кардиолог'),
+('Петрова Елена Владимировна', 'Эндокринолог'),
+('Сидоров Михаил Петрович', 'Пульмонолог'),
+('Кузнецова Ольга Ивановна', 'Гастроэнтеролог'),
+('Николаев Дмитрий Алексеевич', 'Невролог'),
+('Волкова Анна Сергеевна', 'Терапевт'),
+('Семенов Игорь Николаевич', 'Хирург'),
+('Федорова Марина Дмитриевна', 'Уролог'),
+('Павлов Алексей Викторович', 'Офтальмолог'),
+('Соколова Татьяна Михайловна', 'Отоларинголог');
+```
+
+[Полный код](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/sql_scripts/Lab2.sql)

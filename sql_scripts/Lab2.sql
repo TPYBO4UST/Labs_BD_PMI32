@@ -43,10 +43,10 @@ CREATE TABLE patient(
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     id_ward SMALLINT FOREIGN KEY REFERENCES ward(id),
     full_name VARCHAR(255),
-    passport VARCHAR(255),
-    medical_policy VARCHAR(255),
-    number_phone VARCHAR(255),
-    adress NVARCHAR(255),
+    passport VARCHAR(255) UNIQUE,
+    medical_policy VARCHAR(255) UNIQUE,
+    number_phone VARCHAR(255) UNIQUE,
+    address NVARCHAR(255),
     date_of_birth DATE,
     doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id)
 );
@@ -117,7 +117,7 @@ INSERT INTO ward (id_hospital_department, number, number_of_beds, m_or_w, key_di
 (9, 901, 2, 'M', 'G43'), (9, 902, 2, 'W', 'G43'), (9, 903, 3, 'M', 'G43'),
 (10, 1001, 2, 'W', 'J06'), (10, 1002, 2, 'M', 'J06'), (10, 1003, 3, 'W', 'J06');
 
-INSERT INTO patient (id_ward, full_name, passport, medical_policy, number_phone, adress, date_of_birth, doctor_id) VALUES
+INSERT INTO patient (id_ward, full_name, passport, medical_policy, number_phone, address, date_of_birth, doctor_id) VALUES
 (1, 'Смирнов Алексей Викторович', '4510123456', '1234567890', '+79161234567', 'ул. Ленина, 15, кв. 23', '1978-03-15', 1),
 (2, 'Ковалева Ирина Петровна', '4510987654', '9876543210', '+79167654321', 'пр. Мира, 42, кв. 7', '1985-07-22', 2),
 (3, 'Попов Дмитрий Николаевич', '4510555555', '5555555555', '+79165555555', 'ул. Гагарина, 8, кв. 12', '1960-12-03', 3),
