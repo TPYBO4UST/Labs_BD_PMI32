@@ -62,9 +62,12 @@ INSERT INTO doctor (full_name, specialization) VALUES
 ### Лабораторная работа №3
 #### Освоение продвинутых возможностей SQL на примере базы данных больницы. Включает построение запросов различной сложности для анализа медицинских данных.
 
-### Разграничение по файлам:
-<li> Часть 1 пункт 1 - файл [Part_I_1.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_I_1.sql) </li>
-<li> Часть 1 пункт 2 - файл [Part_I_2.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_I_2.sql) </li>
-<li> Часть 1 пункты 3-6 - файл [Part_I_3456.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_I_3456.sql) </li>
-<li> Часть 2 - файл [Part_II_1.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_II.sql) </li>
-#### В файле [📄 Скачать отчет](Lab_3/3Labs.odt) лежат Код + Запуск.
+### 📁 Разграничение по файлам:
+
+- **Часть 1 пункт 1** - файл [Part_I_1.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_I_1.sql)
+- **Часть 1 пункт 2** - файл [Part_I_2.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_I_2.sql)
+- **Часть 1 пункты 3-6** - файл [Part_I_3456.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_I_3456.sql)
+- **Часть 2** - файл [Part_II.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_II.sql)
+
+### 📄 Полная документация:
+[📥 Скачать отчет](Lab_3/3Labs.odt) - код + консоль вывода
