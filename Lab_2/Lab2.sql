@@ -1,0 +1,156 @@
+use hospital;
+
+DROP TABLE IF EXISTS patient_card;
+DROP TABLE IF EXISTS patient_admission;
+DROP TABLE IF EXISTS patient;
+DROP TABLE IF EXISTS ward;
+DROP TABLE IF EXISTS hospital_department;
+DROP TABLE IF EXISTS doctor;
+DROP TABLE IF EXISTS diagnosis;
+
+-- Диагноз
+CREATE TABLE diagnosis(
+    [code-mkb10] VARCHAR(6) NOT NULL PRIMARY KEY, -- от A00.0 до Z99.9.
+    title NVARCHAR(255)
+);
+
+INSERT INTO diagnosis ([code-mkb10], title) VALUES
+('I10', N'Эссенциальная (первичная) гипертензия'),
+('E11', N'Сахарный диабет 2 типа'),
+('J45', N'Астма'),
+('I25', N'Хроническая ишемическая болезнь сердца'),
+('K21', N'Гастроэзофагеальный рефлюкс'),
+('M54', N'Дорсалгия'),
+('J06', N'Острая инфекция верхних дыхательных путей'),
+('I48', N'Фибрилляция и трепетание предсердий'),
+('N39', N'Инфекция мочевыводящих путей'),
+('G43', N'Мигрень');
+
+
+-- Врач
+CREATE TABLE doctor(
+    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
+    full_name NVARCHAR(255) NOT NULL,
+    specialization NVARCHAR(255) NOT NULL
+);
+
+INSERT INTO doctor (full_name, specialization) VALUES
+(N'Иванов Александр Сергеевич', N'Кардиолог'),
+(N'Петрова Елена Владимировна', N'Эндокринолог'),
+(N'Сидоров Михаил Петрович', N'Пульмонолог'),
+(N'Кузнецова Ольга Ивановна', N'Гастроэнтеролог'),
+(N'Николаев Дмитрий Алексеевич', N'Невролог'),
+(N'Волкова Анна Сергеевна', N'Терапевт'),
+(N'Семенов Игорь Николаевич', N'Хирург'),
+(N'Федорова Марина Дмитриевна', N'Уролог'),
+(N'Павлов Алексей Викторович', N'Офтальмолог'),
+(N'Соколова Татьяна Михайловна', N'Отоларинголог');
+
+-- Отделение стационара
+CREATE TABLE hospital_department(
+    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
+    name NVARCHAR(255),
+    number_of_beds SMALLINT,
+    number_of_cameras SMALLINT
+);
+
+INSERT INTO hospital_department (doctor_id, name, number_of_beds, number_of_cameras) VALUES
+(1, N'Кардиологическое отделение', 30, 15),
+(2, N'Эндокринологическое отделение', 25, 12),
+(3, N'Пульмонологическое отделение', 20, 10),
+(4, N'Гастроэнтерологическое отделение', 22, 11),
+(5, N'Неврологическое отделение', 28, 14),
+(6, N'Терапевтическое отделение', 35, 18),
+(7, N'Хирургическое отделение', 40, 20),
+(8, N'Урологическое отделение', 18, 9),
+(9, N'Офтальмологическое отделение', 15, 8),
+(10, N'ЛОР-отделение', 16, 8);
+
+-- Палата
+CREATE TABLE ward(
+    id SMALLINT IDENTITY(1,1) PRIMARY KEY,
+    id_hospital_department SMALLINT FOREIGN KEY REFERENCES hospital_department(id),
+    number SMALLINT,
+    number_of_beds SMALLINT,
+    m_or_w CHAR(1) CHECK (m_or_w IN ('M', 'W')),
+    key_diagnosis VARCHAR(6) NOT NULL FOREIGN KEY REFERENCES diagnosis([code-mkb10])
+);
+
+INSERT INTO ward (id_hospital_department, number, number_of_beds, m_or_w, key_diagnosis) VALUES
+(1, 101, 2, 'M', 'I10'), (1, 102, 2, 'W', 'I10'), (1, 103, 3, 'M', 'I25'),
+(2, 201, 2, 'W', 'E11'), (2, 202, 2, 'M', 'E11'), (2, 203, 3, 'W', 'E11'),
+(3, 301, 2, 'M', 'J45'), (3, 302, 2, 'W', 'J45'), (3, 303, 3, 'M', 'J06'),
+(4, 401, 2, 'W', 'K21'), (4, 402, 2, 'M', 'K21'), (4, 403, 3, 'W', 'K21'),
+(5, 501, 2, 'M', 'M54'), (5, 502, 2, 'W', 'M54'), (5, 503, 3, 'M', 'G43'),
+(6, 601, 2, 'W', 'J06'), (6, 602, 2, 'M', 'J06'), (6, 603, 3, 'W', 'J06'),
+(7, 701, 2, 'M', 'I48'), (7, 702, 2, 'W', 'I48'), (7, 703, 3, 'M', 'I48'),
+(8, 801, 2, 'W', 'N39'), (8, 802, 2, 'M', 'N39'), (8, 803, 3, 'W', 'N39'),
+(9, 901, 2, 'M', 'G43'), (9, 902, 2, 'W', 'G43'), (9, 903, 3, 'M', 'G43'),
+(10, 1001, 2, 'W', 'J06'), (10, 1002, 2, 'M', 'J06'), (10, 1003, 3, 'W', 'J06');
+
+-- Пациент
+CREATE TABLE patient(
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    id_ward SMALLINT FOREIGN KEY REFERENCES ward(id),
+    full_name NVARCHAR(255),
+    passport NVARCHAR(255) UNIQUE,
+    medical_policy NVARCHAR(255) UNIQUE,
+    number_phone NVARCHAR(255) UNIQUE,
+    address NVARCHAR(255),
+    date_of_birth DATE,
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id)
+);
+
+INSERT INTO patient (id_ward, full_name, passport, medical_policy, number_phone, address, date_of_birth, doctor_id) VALUES
+(1, N'Смирнов Алексей Викторович', '4510123456', '1234567890', '+79161234567', N'ул. Ленина, 15, кв. 23', '1978-03-15', 1),
+(2, N'Ковалева Ирина Петровна', '4510987654', '9876543210', '+79167654321', N'пр. Мира, 42, кв. 7', '1985-07-22', 2),
+(3, N'Попов Дмитрий Николаевич', '4510555555', '5555555555', '+79165555555', N'ул. Гагарина, 8, кв. 12', '1960-12-03', 3),
+(4, N'Новикова Екатерина Сергеевна', '4510666666', '6666666666', '+79166666666', N'ул. Советская, 33, кв. 45', '1972-05-18', 4),
+(5, N'Васильев Андрей Иванович', '4510777777', '7777777777', '+79167777777', N'пр. Победы, 17, кв. 9', '1990-09-30', 5),
+(6, N'Морозова Ольга Дмитриевна', '4510888888', '8888888888', '+79168888888', N'ул. Центральная, 5, кв. 3', '1988-01-25', 6),
+(7, N'Фролов Сергей Владимирович', '4510999999', '9999999999', '+79169999999', N'ул. Садовая, 21, кв. 18', '1975-11-08', 7),
+(8, N'Егорова Марина Алексеевна', '4510111111', '1111111111', '+79161111111', N'пр. Строителей, 9, кв. 6', '1995-02-14', 8),
+(9, N'Григорьев Иван Петрович', '4510222222', '2222222222', '+79162222222', N'ул. Молодежная, 14, кв. 11', '1968-08-19', 9),
+(10, N'Соловьева Татьяна Михайловна', '4510333333', '3333333333', '+79163333333', N'ул. Лесная, 27, кв. 22', '1982-04-07', 10),
+(11, N'Козлов Александр Дмитриевич', '4510444444', '4444444444', '+79164444444', N'пр. Космонавтов, 3, кв. 15', '1970-06-12', 1),
+(12, N'Лебедева Наталья Викторовна', '4510123457', '1234567891', '+79161234568', N'ул. Школьная, 19, кв. 4', '1992-10-28', 2);
+
+-- Поступление
+CREATE TABLE patient_admission(
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    id_patient INT FOREIGN KEY REFERENCES patient(id),
+    key_diagnosis VARCHAR(6) NOT NULL FOREIGN KEY REFERENCES diagnosis([code-mkb10]),
+    date_of_receipt DATE
+);
+
+INSERT INTO patient_admission (id_patient, key_diagnosis, date_of_receipt) VALUES
+(1, 'I10', '2024-01-15'), (2, 'E11', '2024-01-16'), (3, 'J45', '2024-01-17'),
+(4, 'I25', '2024-01-18'), (5, 'K21', '2024-01-19'), (6, 'M54', '2024-01-20'),
+(7, 'J06', '2024-01-21'), (8, 'I48', '2024-01-22'), (9, 'N39', '2024-01-23'),
+(10, 'G43', '2024-01-24'), (11, 'I10', '2024-01-25'), (12, 'E11', '2024-01-26'),
+(1, 'I25', '2024-02-01'), (3, 'J06', '2024-02-02'), (5, 'M54', '2024-02-03');
+
+-- Карта пациента
+CREATE TABLE patient_card(
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    id_patient INT FOREIGN KEY REFERENCES patient(id),
+    doctor_id SMALLINT FOREIGN KEY REFERENCES doctor(id),
+    date_of_receipt DATE,
+    date_of_discharge DATE,
+    recommendations NVARCHAR(255)
+);
+
+INSERT INTO patient_card (id_patient, doctor_id, date_of_receipt, date_of_discharge, recommendations) VALUES
+(1, 1, '2024-01-15', '2024-01-25', N'Контроль АД ежедневно, диета с ограничением соли'),
+(2, 2, '2024-01-16', '2024-01-26', N'Контроль уровня сахара, низкоуглеводная диета'),
+(3, 3, '2024-01-17', '2024-01-27', N'Ингаляции с беродуалом, избегать переохлаждения'),
+(4, 4, '2024-01-18', '2024-01-28', N'Дробное питание, исключить острое и жареное'),
+(5, 5, '2024-01-19', '2024-01-29', N'ЛФК, массаж, избегать поднятия тяжестей'),
+(6, 6, '2024-01-20', '2024-01-30', N'Постельный режим, обильное питье'),
+(7, 7, '2024-01-21', '2024-01-31', N'Повторный осмотр через 2 недели'),
+(8, 8, '2024-01-22', '2024-02-01', N'Антибактериальная терапия, обильное питье'),
+(9, 9, '2024-01-23', '2024-02-02', N'Капли в глаза 3 раза в день'),
+(10, 10, '2024-01-24', '2024-02-03', N'Промывание носа солевым раствором'),
+(11, 1, '2024-01-25', NULL, N'Находится на лечении'),
+(12, 2, '2024-01-26', NULL, N'Находится на лечении');
