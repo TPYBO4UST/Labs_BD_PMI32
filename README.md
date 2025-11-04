@@ -70,4 +70,4 @@ INSERT INTO doctor (full_name, specialization) VALUES
 - **Часть 2** - файл [Part_II.sql](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_3/Part_II.sql)
 
 ### 📄 Полная документация:
-[📥 Скачать отчет](https://github.com/TPYBO4UST/Labs_BD_PMI32/raw/main/Lab_3/Отчет.docx) - код + консоль вывода
+[📥 Скачать отчет](https://github.com/TPYBO4UST/Labs_BD_PMI32/raw/main/Lab_3/Отчет.docx) - код sql + консоль вывода
