@@ -78,13 +78,13 @@ INSERT INTO doctor (full_name, specialization) VALUES
 
 #### 1. [Хранимый процедуры](Lab_4/procedure.sql)
 #### Вывод консоли:
-![A)](Lab_4/image_output/Procedures/A)
+![A)](Lab_4/image_output/Procedures/A.png)
 
-![B)](Lab_4/image_output/Procedures/B)
+![B)](Lab_4/image_output/Procedures/B.png)
 
-![C)](Lab_4/image_output/Procedures/C)
+![C)](Lab_4/image_output/Procedures/C.png)
 
-![D)](Lab_4/image_output/Procedures/D)
+![D)](Lab_4/image_output/Procedures/D.png)
 
 #### 2. [Пользовательские функции](Lab_4/function.sql)
 #### 3. [Триггеры](Lab_4/triggers.sql)
