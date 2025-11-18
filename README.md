@@ -56,7 +56,7 @@ INSERT INTO doctor (full_name, specialization) VALUES
 ('Соколова Татьяна Михайловна', 'Отоларинголог');
 ```
 
-[Полный код](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/sql_scripts/Lab2.sql)
+[Полный код](https://github.com/TPYBO4UST/Labs_BD_PMI32/blob/main/Lab_2/Lab2.sql)
 
 
 ### Лабораторная работа №3
