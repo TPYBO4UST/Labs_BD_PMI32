@@ -1,3 +1,10 @@
+# Содержание
+## [Лабораторная работа №1](https://github.com/TPYBO4UST/Labs_BD_PMI32?tab=readme-ov-file#%D0%BB%D0%B0%D0%B1%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-1)
+## [Лабораторная работа №2](https://github.com/TPYBO4UST/Labs_BD_PMI32?tab=readme-ov-file#%D0%BB%D0%B0%D0%B1%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-2)
+## [Лабораторная работа №3](https://github.com/TPYBO4UST/Labs_BD_PMI32?tab=readme-ov-file#%D0%BB%D0%B0%D0%B1%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-3)
+## [Лабораторная работа №4](https://github.com/TPYBO4UST/Labs_BD_PMI32?tab=readme-ov-file#%D0%BB%D0%B0%D0%B1%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-4)
+
+
 # 🏥 Автоматизация работы стационара в больнице
 
 [Вариант 26](https://docs.google.com/document/d/1P1bwsIgZWwOLAHFtYpFxWD9C4rTAEKkA/edit?tab=t.0)
