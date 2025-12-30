@@ -133,13 +133,13 @@ INSERT INTO doctor (full_name, specialization) VALUES
 ## Лабораторная работа №6.
 ### Преобразование реляционной модели базы данных больницы в графовую с использованием узлов и ребер.
 
-![graph diag](Lab_6/img/diag)
+![graph diag](Lab_6/img/diag.png)
 
 #### ![Create file](Lab_6/Lab_6_create.sql)
 #### ![Insert file](Lab_6/Lab_6_insert.sql)
-#### ![CTE 3.2](Lab_6/CTE_in_labs3.2.sql) 
+#### ![Реализация CTE 3.2](Lab_6/CTE_in_labs3.2.sql) 
 
-### Реализация и выводы запросов 3.2
-![output1](Lab_6/img/res1)
+### Выводы запросов 3.2
+![output1](Lab_6/img/res1.png)
 
-![output2](Lab_6/img/res2)
+![output2](Lab_6/img/res2.png)
