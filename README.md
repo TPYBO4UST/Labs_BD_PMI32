@@ -135,9 +135,9 @@ INSERT INTO doctor (full_name, specialization) VALUES
 
 ![graph diag](Lab_6/img/diag.png)
 
-#### ![Create file](Lab_6/Lab_6_create.sql)
-#### ![Insert file](Lab_6/Lab_6_insert.sql)
-#### ![Реализация CTE 3.2](Lab_6/CTE_in_labs3.2.sql) 
+- **Создание узлов и ребер** - [Create file](Lab_6/Lab_6_create.sql)
+- **Заполнение из 2 Лабы** - [Insert file](Lab_6/Lab_6_insert.sql)
+- **Реализация запросов из 3 лабы** - ![Реализация CTE 3.2](Lab_6/CTE_in_labs3.2.sql) 
 
 ### Выводы запросов 3.2
 ![output1](Lab_6/img/res1.png)
