@@ -225,7 +225,7 @@ db.restaurants.find(
   { _id: 0, restaurant_id: 1, name: 1, borough: 1, cuisine: 1 }
 ).limit(5)
 ```
-![1.](Lab_8/zadanie1/1.png)
+![1.](lab_8/zadanie1/1.png)
 
 ### 2. Первые 5 ресторанов из Bronx по алфавиту
 ```javascript
@@ -234,4 +234,4 @@ db.restaurants.find(
   { _id: 0, name: 1, borough: 1 }
 ).sort({ name: 1 }).limit(5)
 ```
-![2.](Lab_8/zadanie1/2.png)
+![2.](lab_8/zadanie1/2.png)
