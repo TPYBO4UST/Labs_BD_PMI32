@@ -235,3 +235,350 @@ db.restaurants.find(
 ).sort({ name: 1 }).limit(5)
 ```
 ![2.](lab_8/zadanie1/2.png)
+
+### 3. Рестораны с оценкой 80-100
+```javascript
+db.restaurants.find({
+  "grades.score": { $gt: 80, $lt: 100 }
+}).limit(5)
+```
+![3.](lab_8/zadanie1/3.png)
+
+### 4. Не American кухня, оценка A, не Brooklyn
+```javascript
+db.restaurants.find({
+  cuisine: { $ne: "American" },
+  "grades.grade": "A",
+  borough: { $ne: "Brooklyn" }
+}).sort({ cuisine: -1 }).limit(5)
+```
+![4.](lab_8/zadanie1/4.png)
+
+### 5. Название начинается с "Wil"
+```javascript
+db.restaurants.find({
+  name: /^Wil/
+}, {
+  _id: 0,
+  restaurant_id: 1,
+  name: 1,
+  borough: 1,
+  cuisine: 1
+})
+```
+![5.](lab_8/zadanie1/5.png)
+
+### 6. Bronx и (American или Chinese)
+```javascript
+db.restaurants.find({
+  borough: "Bronx",
+  cuisine: { $in: ["American", "Chinese"] }
+}, {
+  _id: 0,
+  name: 1,
+  cuisine: 1
+}).limit(10)
+```
+![6.](lab_8/zadanie1/6.png)
+
+### 7. Оценка A с score=9 в определенную дату
+```javascript
+db.restaurants.find({
+  "grades": {
+    $elemMatch: {
+      "grade": "A",
+      "score": 9,
+      "date": { "$date": ISODate("2014-08-11T00:00:00Z") }
+    }
+  }
+}, {
+  _id: 0,
+  restaurant_id: 1,
+  name: 1,
+  grades: 1
+})
+```
+![7.](lab_8/zadanie1/7.png)
+
+### 8. Количество ресторанов по районам и кухням
+```javascript
+db.restaurants.aggregate([
+  {
+    $group: {
+      _id: {
+        borough: "$borough",
+        cuisine: "$cuisine"
+      },
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      borough: "$_id.borough",
+      cuisine: "$_id.cuisine",
+      count: 1
+    }
+  },
+  { $sort: { borough: 1, cuisine: 1 } }
+])
+```
+![8.](lab_8/zadanie1/8.png)
+
+### 9. Ресторан с минимальной суммой баллов в Bronx
+```javascript
+db.restaurants.aggregate([
+  { $match: { borough: "Bronx" } },
+  {
+    $addFields: {
+      totalScore: {
+        $sum: "$grades.score"
+      }
+    }
+  },
+  { $sort: { totalScore: 1 } },
+  { $limit: 1 }
+])
+```
+![9.](lab_8/zadanie1/9.png)
+
+### 10. Добавить любимый ресторан:
+```javascript
+db.restaurants.insertOne({
+  restaurant_id: "99999999",
+  name: "Мой любимый ресторан",
+  borough: "Manhattan",
+  cuisine: "Russian",
+  address: {
+    building: "123",
+    street: "Main Street",
+    zipcode: "10001",
+    coord: [-73.9857, 40.7484]
+  },
+  grades: [
+    { date: new Date(), grade: "A", score: 10 }
+  ]
+})
+```
+![10.](lab_8/zadanie1/10.png)
+
+### 11. Добавить время работы:
+```javascript
+db.restaurants.updateOne(
+  { restaurant_id: "99999999" },
+  {
+    $set: {
+      working_hours: {
+        monday: "09:00-22:00",
+        tuesday: "09:00-22:00",
+        wednesday: "09:00-22:00",
+        thursday: "09:00-22:00",
+        friday: "09:00-23:00",
+        saturday: "10:00-23:00",
+        sunday: "10:00-21:00"
+      }
+    }
+  }
+)
+```
+![11.](lab_8/zadanie1/11.png)
+
+### 12. Изменить время работы:
+```javascript
+db.restaurants.updateOne(
+  { restaurant_id: "99999999" },
+  {
+    $set: {
+      "working_hours.sunday": "11:00-20:00",
+      "working_hours.friday": "09:00-24:00"
+    }
+  }
+)
+```
+
+![12.](lab_8/zadanie1/12.png)
+
+
+## Задание 1: Работа с коллекцией weather.json
+
+### 1. Разница между максимальной и минимальной температурой
+```javascript
+db.weather.aggregate([
+  {
+    $group: {
+      _id: null,
+      maxTemp: { $max: "$temperature" },
+      minTemp: { $min: "$temperature" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      difference: { $subtract: ["$maxTemp", "$minTemp"] }
+    }
+  }
+])
+```
+![1.](lab_8/zadanie2/1.png)
+
+### 2. Средняя температура без 10 самых низких и высоких:
+```javascript
+db.weather.aggregate([
+  { $sort: { temperature: 1 } },
+  {
+    $group: {
+      _id: null,
+      temps: { $push: "$temperature" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      avgTemp: {
+        $avg: {
+          $slice: [
+            "$temps",
+            10,
+            { $subtract: [{ $size: "$temps" }, 20] }
+          ]
+        }
+      }
+    }
+  }
+])
+```
+![2.](lab_8/zadanie2/2.png)
+
+### 3. 10 самых холодных дней с южным ветром:
+```javascript
+db.weather.aggregate([
+  { $match: { wind_direction: "Южный" } },
+  { $sort: { temperature: 1 } },
+  { $limit: 10 },
+  {
+    $group: {
+      _id: null,
+      avgTemp: { $avg: "$temperature" },
+      records: { $push: "$$ROOT" }
+    }
+  }
+])
+```
+![3.](lab_8/zadanie2/3.png)
+
+### 4. Дни со снегом (температура < 0 и code = "SN"):
+```javascript
+db.weather.aggregate([
+  { 
+    $match: { 
+      temperature: { $lt: 0 },
+      code: "SN"
+    } 
+  },
+  {
+    $group: {
+      _id: {
+        year: "$year",
+        month: "$month",
+        day: "$day"
+      }
+    }
+  },
+  { $count: "snow_days" }
+])
+```
+![4.](lab_8/zadanie2/4.png)
+
+### 5. Разница между снегом и дождем зимой:
+```javascript
+db.weather.aggregate([
+  { $match: { month: { $in: [12, 1, 2] } } },
+  {
+    $group: {
+      _id: "$code",
+      count: { $sum: 1 }
+    }
+  },
+  { $sort: { _id: 1 } }
+])
+```
+![5.](lab_8/zadanie2/5.png)
+
+### 6. Вероятность осадков в ясный день:
+```javascript
+db.weather.aggregate([
+  {
+    $group: {
+      _id: {
+        year: "$year",
+        month: "$month",
+        day: "$day"
+      },
+      clear_count: {
+        $sum: { $cond: [{ $eq: ["$code", "CL"] }, 1, 0] }
+      },
+      total_measurements: { $sum: 1 },
+      has_precipitation: {
+        $max: { $cond: [{ $ne: ["$code", "CL"] }, 1, 0] }
+      }
+    }
+  },
+  {
+    $match: {
+      $expr: {
+        $gt: [
+          { $divide: ["$clear_count", "$total_measurements"] },
+          0.75
+        ]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      total_clear_days: { $sum: 1 },
+      precipitation_days: { $sum: "$has_precipitation" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      probability: {
+        $multiply: [
+          { $divide: ["$precipitation_days", "$total_clear_days"] },
+          100
+        ]
+      }
+    }
+  }
+])
+```
+![6.](lab_8/zadanie2/6.png)
+
+## 7. Изменение температуры в нечетные дни зимы:
+```javascript
+db.weather.aggregate([
+  { 
+    $match: { 
+      month: { $in: [12, 1, 2] },
+      day: { $mod: [2, 1] } // нечетные дни
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      avgTempOriginal: { $avg: "$temperature" },
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      avgTempOriginal: 1,
+      avgTempIncreased: { $add: ["$avgTempOriginal", 1] },
+      change: 1
+    }
+  }
+])
+```
+![7.](lab_8/zadanie2/7.png)
