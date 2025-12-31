@@ -150,7 +150,7 @@ INSERT INTO doctor (full_name, specialization) VALUES
 ### Изучение транзакций в mssql
 
 ### Задание 1. Транзакции с откатом и фиксацией
-- **Код задания 1**- !(Lab_7/task1/tranzakt_1_zad.sql)
+- **Код задания 1**- ![task1](Lab_7/task1/tranzakt_1_zad.sql)
 #### Транзакция с откатом
 ![1)](Lab_7/task1/img/1.png)
 ![2)](Lab_7/task1/img/2.png)
@@ -161,19 +161,20 @@ INSERT INTO doctor (full_name, specialization) VALUES
 
 ### Задание 2. Проверка уровней изоляции транзакций
 #### 1. Уровень изоляции READ UNCOMMITTED
-- **Код сессии 1**- !(Lab_7/task2/READ%20UNCOMMITTED/seans1.sql)
-- **Код сессии 2**- !(Lab_7/task2/READ%20UNCOMMITTED/seans2.sql)
+- **Код сессии 1**- ![session1](Lab_7/task2/READ%20UNCOMMITTED/seans1.sql)
+- **Код сессии 2**- ![session2](Lab_7/task2/READ%20UNCOMMITTED/seans2.sql)
 
-![1)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt1.png)
-![2)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt2.png)
+![1)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt2.png)
+![2)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt1.png)
+
 - **Сеанс 1: Начинает транзакцию и изменяет адрес пациента с id=1**
 - **Сеанс 2: Видит измененный адрес "Новый адрес (грязное чтение)" даже до коммита**
 - **Сеанс 1: Откатывает транзакцию**
 - **Результат: Сеанс 2 прочитал "грязные" данные, которые не были зафиксированы**
 
 #### 2. Уровень изоляции READ COMMITTED
-- **Код сессии 1**- !(Lab_7/task2/READ%20COMMITTED/seans1.sql)
-- **Код сессии 2**- !(Lab_7/task2/READ%20COMMITTED/seans2.sql)
+- **Код сессии 1**- ![session1](Lab_7/task2/READ%20COMMITTED/seans1.sql)
+- **Код сессии 2**- ![session2](Lab_7/task2/READ%20COMMITTED/seans2.sql)
 
 ![1)](Lab_7/task2/READ%20COMMITTED/img/1.png)
 ![2)](Lab_7/task2/READ%20COMMITTED/img/3.png)
@@ -185,8 +186,8 @@ INSERT INTO doctor (full_name, specialization) VALUES
 - **Результат: Неповторяющееся чтение - два чтения в одной транзакции вернули разные данные**
 
 #### 3. Уровень изоляции REPEATABLE READ
-- **Код сессии 1**- !(Lab_7/task2/REPEATABLE%20READ/seans1.sql)
-- **Код сессии 2**- !(Lab_7/task2/REPEATABLE%20READ/seans2.sql)
+- **Код сессии 1**- ![session1](Lab_7/task2/REPEATABLE%20READ/seans1.sql)
+- **Код сессии 2**- ![session2](Lab_7/task2/REPEATABLE%20READ/seans2.sql)
 
 ![1)](Lab_7/task2/REPEATABLE%20READ/img/res1.png)
 ![2)](Lab_7/task2/REPEATABLE%20READ/img/res2.png)
@@ -198,8 +199,8 @@ INSERT INTO doctor (full_name, specialization) VALUES
 - **Результат: Фантомное чтение - появилась новая запись, удовлетворяющая условию запроса**
 
 #### 4. Уровень изоляции SERIALIZABLE
-- **Код сессии 1**- !(Lab_7/task2/SERIALIZABLE/seans1.sql)
-- **Код сессии 2**- !(Lab_7/task2/SERIALIZABLE/seans2.sql)
+- **Код сессии 1**- ![session1](Lab_7/task2/SERIALIZABLE/seans1.sql)
+- **Код сессии 2**- ![session2](Lab_7/task2/SERIALIZABLE/seans2.sql)
 
 ![1)](Lab_7/task2/SERIALIZABLE/img/res1.png)
 ![1)](Lab_7/task2/SERIALIZABLE/img/res2.png)
