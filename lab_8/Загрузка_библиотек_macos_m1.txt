@@ -1,11 +1,13 @@
+docker run -d --name mongodb -p 27017:27017 mongo:latest
+docker exec -it mongodb mongosh
 
-# Взял немного не ту библиотеку о ресторанах, но структурой она идентичная( ~2000 ресторанов)
+
 curl -O https://raw.githubusercontent.com/mongodb/docs-assets/primer-dataset/primer-dataset.json
 
 docker cp primer-dataset.json mongodb:/tmp/
 
 docker exec -i mongodb mongoimport --db test --collection restaurants --file /tmp/primer-dataset.json
 
-docker cp ~/Download/weather.json mongodb:/tmp/
+docker cp ~/Downloads/weather.json mongodb:/tmp/
 
 docker exec -i mongodb mongoimport --db test --collection weather --file /tmp/weather.json --jsonArray

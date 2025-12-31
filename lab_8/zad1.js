@@ -1,14 +1,28 @@
 // 1. Все документы без _id
 db.restaurants.find(
-  {},
-  { _id: 0, restaurant_id: 1, name: 1, borough: 1, cuisine: 1 }
-).limit(5)
+    {},
+    {
+        _id: 0,
+        restaurant_id: 1,
+        name: 1,
+        borough: 1,
+        cuisine: 1
+    }
+)
 
 // 2. Первые 5 ресторанов из Bronx по алфавиту
 db.restaurants.find(
-  { borough: "Bronx" },
-  { _id: 0, name: 1, borough: 1 }
-).sort({ name: 1 }).limit(5)
+    { borough: "Bronx" },
+    {
+        _id: 0,
+        restaurant_id: 1,
+        name: 1,
+        borough: 1,
+        cuisine: 1
+    }
+)
+.sort({ name: 1 })
+.limit(5)
 
 // 3. Рестораны с оценкой 80-100
 db.restaurants.find({
@@ -49,7 +63,7 @@ db.restaurants.find({
     $elemMatch: {
       "grade": "A",
       "score": 9,
-      "date": { "$date": ISODate("2014-08-11T00:00:00Z") }
+      "date": ISODate("2014-08-11T00:00:00Z")
     }
   }
 }, {
