@@ -164,8 +164,8 @@ INSERT INTO doctor (full_name, specialization) VALUES
 - **Код сессии 1**- ![session1](Lab_7/task2/READ%20UNCOMMITTED/seans1.sql)
 - **Код сессии 2**- ![session2](Lab_7/task2/READ%20UNCOMMITTED/seans2.sql)
 
-![1)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt2.png)
-![2)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt1.png)
+![1)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt1.png)
+![2)](Lab_7/task2/READ%20UNCOMMITTED/img/dirt2.png)
 
 - **Сеанс 1: Начинает транзакцию и изменяет адрес пациента с id=1**
 - **Сеанс 2: Видит измененный адрес "Новый адрес (грязное чтение)" даже до коммита**
